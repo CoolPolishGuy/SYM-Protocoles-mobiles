@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">Sym_labo_protocole</string>
+    <string name="app_name">SYM - Laboratory no. 2</string>
+    <string name="main_title">Choose an activity</string>
+    <string name="title_async">Asynchronous transmission</string>
+    <string name="title_compressed">Compressed transmission</string>
+    <string name="title_differate">Differate transmission</string>
+    <string name="title_object">Object transmission</string>
+    <string name="launch_async">Launch Async</string>
+    <string name="launch_compressed">Launch Compressed</string>
+    <string name="launch_differate">Launch Differate</string>
+    <string name="launch_object">Launch Object</string>
+    <string name="to_send">Data to send</string>
+    <string name="received">Data received</string>
+    <string name="send">Send</string>
 </resources>

@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sym.heigvd.ch.sym_labo_protocole.async.AsyncActivity">
+    android:orientation="vertical"
+    tools:context="sym.heigvd.ch.sym_labo_protocole.async.AsyncActivity"
+    android:weightSum="1">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="73dp"
+        android:paddingTop="30dp"
+        android:text="@string/title_async"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_weight="0.10" />
+
+    <EditText
+        android:id="@+id/toSendData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.28"
+        android:background="@drawable/greenbox"
+        android:gravity="top|start"
+        android:hint="@string/to_send"
+        android:minLines="5"
+        android:maxLines="5"
+        android:padding="10dp" />
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/send"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <EditText
+        android:id="@+id/receivedData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.27"
+        android:background="@drawable/redbox"
+        android:enabled="false"
+        android:gravity="top|start"
+        android:hint="@string/received"
+        android:minLines="3"
+        android:maxLines="3"
+        android:padding="10dp" />
+
+</LinearLayout>
