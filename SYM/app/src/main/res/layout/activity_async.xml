@@ -11,8 +11,8 @@
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:layout_height="73dp"
-        android:paddingTop="30dp"
+        android:layout_height="64dp"
+        android:paddingTop="20dp"
         android:text="@string/title_async"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -20,18 +20,17 @@
         android:textStyle="bold"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="16dp"
-        android:layout_weight="0.10" />
+        android:layout_weight="0.03" />
 
     <EditText
         android:id="@+id/toSendData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.28"
         android:background="@drawable/greenbox"
         android:gravity="top|start"
         android:hint="@string/to_send"
-        android:minLines="5"
-        android:maxLines="5"
+        android:minLines="7"
+        android:maxLines="7"
         android:padding="10dp" />
 
     <Button
@@ -47,13 +46,12 @@
         android:id="@+id/receivedData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.27"
         android:background="@drawable/redbox"
         android:enabled="false"
         android:gravity="top|start"
         android:hint="@string/received"
-        android:minLines="3"
-        android:maxLines="3"
+        android:minLines="5"
+        android:maxLines="5"
         android:padding="10dp" />
 
 </LinearLayout>
