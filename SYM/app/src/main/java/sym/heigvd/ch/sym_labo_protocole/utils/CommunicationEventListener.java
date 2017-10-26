@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
  */
-package ch.heigvd.iict.sym.lab.comm;
+package sym.heigvd.ch.sym_labo_protocole.utils;
 
 import java.util.EventListener;
 
