@@ -15,12 +15,12 @@ public class AsyncSendRequest extends AsyncTask<String, String, String> {
 
     private CommunicationEventListener listener;
     private static final String USER_AGENT = "Mozilla/5.0";
-    private static final String CONTENT_TYPE = "application/json";
+    //private static final String CONTENT_TYPE = "application/json";
 
     @Override
     public String doInBackground(String[] arguments) {
 
-        return sendRequest(arguments[0], arguments[1]);
+        return sendRequest(arguments[0], arguments[1], arguments[2]);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class AsyncSendRequest extends AsyncTask<String, String, String> {
         listener.handleServerResponse(result);
     }
 
-    private String sendRequest(String request, String url) {
+    private String sendRequest(String request, String url, String contentType) {
 
         String answer = null;
 
@@ -41,7 +41,7 @@ public class AsyncSendRequest extends AsyncTask<String, String, String> {
             // Headers setting
             connection.setRequestMethod("POST");
             connection.setRequestProperty("User-Agent", USER_AGENT);
-            connection.setRequestProperty("Content-Type", CONTENT_TYPE);
+            connection.setRequestProperty("Content-Type", contentType);
             connection.setDoOutput(true);
 
             // Write of the data

@@ -57,8 +57,24 @@ public class AsyncActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // TODO Do spinner thing !!
-                sender.execute(toSendData.getText().toString(), "http://sym.iict.ch/rest/json");
+                String spinnerText = String.valueOf(spinner.getSelectedItem());
+                String url = "http://sym.iict.ch/rest/json";
+                String contentType = "application/json";
+
+                switch (spinnerText) {
+                    case "JSON" :
+                        url = "http://sym.iict.ch/rest/json";
+                        contentType = "application/json";
+                        break;
+                    case "XML" :
+                        // TODO
+                        break;
+                    case "Plain text" :
+                        // TODO
+                        break;
+                }
+
+                sender.execute(toSendData.getText().toString(), url, contentType);
             }
         });
     }
