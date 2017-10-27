@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import sym.heigvd.ch.sym_labo_protocole.MainActivity;
@@ -18,6 +19,7 @@ public class AsyncActivity extends AppCompatActivity {
     private EditText receivedData;
     private EditText toSendData;
     private Button send;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class AsyncActivity extends AppCompatActivity {
         this.receivedData = (EditText) findViewById(R.id.receivedData);
         this.toSendData = (EditText) findViewById(R.id.toSendData);
         this.send = (Button) findViewById(R.id.send);
+        this.spinner = (Spinner) findViewById(R.id.spinner);
 
         toSendData.setText("{ \"nom\": \"hacker\"}");
 
@@ -45,7 +48,6 @@ public class AsyncActivity extends AppCompatActivity {
                     }
                 });
 
-                // TODO Et là on retourne quoi?
                 return true;
             }
         });
@@ -54,6 +56,8 @@ public class AsyncActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // TODO Do spinner thing !!
                 sender.execute(toSendData.getText().toString(), "http://sym.iict.ch/rest/json");
             }
         });
