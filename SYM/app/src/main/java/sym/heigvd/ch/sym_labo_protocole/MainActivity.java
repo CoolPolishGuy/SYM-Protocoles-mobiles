@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import sym.heigvd.ch.sym_labo_protocole.async.AsyncActivity;
+import sym.heigvd.ch.sym_labo_protocole.differate.DifferateActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
         buttonDifferate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this, DifferateActivity.class);
+                startActivity(intent);
             }
         });
 

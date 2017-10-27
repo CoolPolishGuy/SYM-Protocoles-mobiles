@@ -25,7 +25,6 @@ public class AsyncActivity extends AppCompatActivity {
         setContentView(R.layout.activity_async);
 
         // Recuperate UI things
-        this.receivedData = (EditText) findViewById(R.id.receivedData);
         this.toSendData = (EditText) findViewById(R.id.toSendData);
         this.send = (Button) findViewById(R.id.send);
 
