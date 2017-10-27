@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import sym.heigvd.ch.sym_labo_protocole.MainActivity;
 import sym.heigvd.ch.sym_labo_protocole.R;
+import sym.heigvd.ch.sym_labo_protocole.object.ObjectActivity;
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
 
 public class AsyncActivity extends AppCompatActivity {
@@ -28,8 +29,10 @@ public class AsyncActivity extends AppCompatActivity {
         this.toSendData = (EditText) findViewById(R.id.toSendData);
         this.send = (Button) findViewById(R.id.send);
 
+        toSendData.setText("{ \"nom\": \"hacker\"}");
+
         // Sender settings
-        final IAsyncSendRequest sender = new AsyncSendRequest();
+        final AsyncSendRequest sender = new AsyncSendRequest();
         sender.setCommunicationEventListener(new CommunicationEventListener() {
             public boolean handleServerResponse(final String response) {
 
@@ -51,7 +54,7 @@ public class AsyncActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sender.sendRequest(toSendData.getText().toString(), "http://sym.iict.ch/rest/json");
+                sender.execute(toSendData.getText().toString(), "http://sym.iict.ch/rest/json");
             }
         });
     }
