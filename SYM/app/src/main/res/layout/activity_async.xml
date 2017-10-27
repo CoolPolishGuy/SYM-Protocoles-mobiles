@@ -22,6 +22,12 @@
         tools:layout_editor_absoluteY="16dp"
         android:layout_weight="0.03" />
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/language_array"/>
+
     <EditText
         android:id="@+id/toSendData"
         android:layout_width="match_parent"

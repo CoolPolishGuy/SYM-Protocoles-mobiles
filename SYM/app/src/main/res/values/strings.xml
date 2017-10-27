@@ -12,4 +12,13 @@
     <string name="to_send">Data to send</string>
     <string name="received">Data received</string>
     <string name="send">Send</string>
+    <string name="JSON">JSON</string>
+    <string name="XML">XML</string>
+    <string name="plain">Plain text</string>
+
+    <string-array name="language_array">
+        <item>@string/JSON</item>
+        <item>@string/XML</item>
+        <item>@string/plain</item>
+    </string-array>
 </resources>
