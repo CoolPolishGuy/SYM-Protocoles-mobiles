@@ -8,17 +8,17 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
 
 /**
- * Created by galahad on 27.10.17.
+ * Send a request to the server
+ * @author Tano Iannetta
  */
 public class DifferateSendRequest  extends AsyncTask<String,String,String> {
     private CommunicationEventListener listener;
 
-    public static final String METHODE = "POST";
+    public static final String METHOD = "POST";
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String CONTENT_TYPE = "text/plain";
 
@@ -33,28 +33,15 @@ public class DifferateSendRequest  extends AsyncTask<String,String,String> {
         super.onPostExecute(result);
         listener.handleServerResponse(result);
     }
-
-
-    public void sendRequest(List<String> requests, String url) {
-        for(String req : requests)
-        {
-            sendRequest(req, url);
-        }
-    }
-
-
-    //todo mettre comme classe utils
     private void sendRequest(String request, String url) {
-
         String response = null;
-
         try {
             // connection
             URL url_object = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) url_object.openConnection();
 
             // headers
-            connection.setRequestMethod(METHODE);
+            connection.setRequestMethod(METHOD);
             connection.setRequestProperty("User-Agent", USER_AGENT);
             connection.setRequestProperty("Content-Type", CONTENT_TYPE);
             connection.setDoOutput(true);

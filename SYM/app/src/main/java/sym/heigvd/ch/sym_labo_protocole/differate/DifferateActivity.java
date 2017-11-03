@@ -16,20 +16,34 @@ import sym.heigvd.ch.sym_labo_protocole.R;
 import sym.heigvd.ch.sym_labo_protocole.async.AsyncActivity;
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
 
+
 /**
- * TODO demander comment corriger : lancer timer -> revenir page principale -> relancer activite -> stopper timer
+ * This activity send requests stored in a list every x seconds
+ * This is used to simulate a differate send when the device isn't connected to internet
+ * and therefore can't send http requests to the server.
+ * @author Tano Iannetta
+ * //todo ajout fonctionnalité lara pour les différents types
  */
 public class DifferateActivity extends AppCompatActivity {
 
+    // interface
     private EditText dataToSend;
-    private EditText receivedData;
     private Button send;
     private Button stopSend;
 
     private Timer timer;
-
-
     private List<String> differateRequests = new ArrayList<>();
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(timer != null)
+        {
+            Log.e("Timer", "timer canceled");
+            timer.cancel();
+        }
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,53 +51,22 @@ public class DifferateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_differate);
 
         // Recuperate Ui things
-        this.receivedData = (EditText) findViewById(R.id.receivedData);
         this.dataToSend = (EditText) findViewById(R.id.toSendData);
         this.send = (Button) findViewById(R.id.send);
         this.stopSend = (Button) findViewById(R.id.stopSent);
 
-        // prepare some requests to send
-        differateRequests.add("differante send 1");
-        differateRequests.add("differante send 2");
-        differateRequests.add("differante send 3");
-        differateRequests.add("differante send 4");
-
-        // pre fill data to send
-        dataToSend.setText(differateRequests.get(0) + " " +
-                differateRequests.get(1) + " " +
-                differateRequests.get(2) + " " +
-                differateRequests.get(3));
+        launchTimer();
 
         // action associated to "send" button
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // todo empecher plusieurs timers
-                timer = new Timer();
-                timer.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-
-                        // Sender settings
-                        final DifferateSendRequest sender = new DifferateSendRequest();
-                        sender.setCommunicationEventListener(new CommunicationEventListener() {
-                            @Override
-                            public boolean handleServerResponse(final String response) {
-
-                                // Code de traitement de la réponse – dans le UI-Thread
-                                DifferateActivity.this.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // Update view
-                                        receivedData.setText(response);
-                                    }
-                                });
-                                return true;
-                            }
-                        });
-                        sender.execute(String.valueOf(differateRequests), "http://sym.iict.ch/rest/txt");
-                    }
-                },2000,10000);
+                String req = String.valueOf(dataToSend.getText());
+                if(req.length() != 0)
+                {
+                    // add to the list
+                    differateRequests.add(req);
+                }
             }
         });
         // action associated to "stop send" button
@@ -92,10 +75,54 @@ public class DifferateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(timer != null)
                 {
-                    Log.e("Timer", "timer stopped");
+                    Log.e("Timer", "timer canceled");
                     timer.cancel();
                 }
             }
         });
+    }
+
+    /**
+     * Start a timer that send the requests in the list
+     * every 10 seconds
+     */
+    private void launchTimer()
+    {
+        if(timer == null) // no timer already started
+        {
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+
+                    if(!differateRequests.isEmpty())
+                    {
+                        // send requests
+                        for(String request : differateRequests)
+                        {
+                            // Sender settings
+                            final DifferateSendRequest sender = new DifferateSendRequest();
+                            sender.setCommunicationEventListener(new CommunicationEventListener() {
+                                @Override
+                                public boolean handleServerResponse(final String response) {
+                                    // process response in UI-Thread
+                                    DifferateActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // log response
+                                            Log.e("Response", response);
+                                        }
+                                    });
+                                    return true;
+                                }
+                            });
+                            // send request
+                            sender.execute(request, "http://sym.iict.ch/rest/txt");
+                        }
+                        differateRequests.clear();
+                    }
+                }
+            },10000,10000); // after 10sec every 10sec
+        }
     }
 }
