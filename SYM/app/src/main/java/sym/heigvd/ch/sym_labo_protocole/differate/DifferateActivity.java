@@ -21,8 +21,8 @@ import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
  */
 public class DifferateActivity extends AppCompatActivity {
 
+    // interface
     private EditText dataToSend;
-    private EditText receivedData;
     private Button send;
     private Button stopSend;
 
@@ -37,53 +37,55 @@ public class DifferateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_differate);
 
         // Recuperate Ui things
-        this.receivedData = (EditText) findViewById(R.id.receivedData);
         this.dataToSend = (EditText) findViewById(R.id.toSendData);
         this.send = (Button) findViewById(R.id.send);
         this.stopSend = (Button) findViewById(R.id.stopSent);
 
         // prepare some requests to send
-        differateRequests.add("differante send 1");
-        differateRequests.add("differante send 2");
-        differateRequests.add("differante send 3");
-        differateRequests.add("differante send 4");
+        differateRequests.add("differate send 1\n");
+        differateRequests.add("differate send 2\n");
+        differateRequests.add("differate send 3\n");
+        differateRequests.add("differate send 4\n");
 
         // pre fill data to send
-        dataToSend.setText(differateRequests.get(0) + " " +
-                differateRequests.get(1) + " " +
-                differateRequests.get(2) + " " +
+        dataToSend.setText(differateRequests.get(0) +
+                differateRequests.get(1)  +
+                differateRequests.get(2)  +
                 differateRequests.get(3));
 
         // action associated to "send" button
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // todo empecher plusieurs timers
-                timer = new Timer();
-                timer.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
+                if(timer == null) // no timer already started
+                {
+                    timer = new Timer();
+                    timer.scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
 
-                        // Sender settings
-                        final DifferateSendRequest sender = new DifferateSendRequest();
-                        sender.setCommunicationEventListener(new CommunicationEventListener() {
-                            @Override
-                            public boolean handleServerResponse(final String response) {
+                            // Sender settings
+                            final DifferateSendRequest sender = new DifferateSendRequest();
+                            sender.setCommunicationEventListener(new CommunicationEventListener() {
+                                @Override
+                                public boolean handleServerResponse(final String response) {
+                                    // process response in UI-Thread
+                                    DifferateActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // log response
+                                            Log.e("Response", response);
+                                        }
+                                    });
+                                    return true;
+                                }
+                            });
+                            // send request
+                            sender.execute(String.valueOf(differateRequests), "http://sym.iict.ch/rest/txt");
+                        }
+                    },2000,10000); // after 2sec every 10sec
+                }
 
-                                // Code de traitement de la réponse – dans le UI-Thread
-                                DifferateActivity.this.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // Update view
-                                        receivedData.setText(response);
-                                    }
-                                });
-                                return true;
-                            }
-                        });
-                        sender.execute(String.valueOf(differateRequests), "http://sym.iict.ch/rest/txt");
-                    }
-                },2000,10000);
             }
         });
         // action associated to "stop send" button
