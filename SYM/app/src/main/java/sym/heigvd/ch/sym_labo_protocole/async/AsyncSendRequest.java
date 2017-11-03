@@ -15,7 +15,6 @@ public class AsyncSendRequest extends AsyncTask<String, String, String> {
 
     private CommunicationEventListener listener;
     private static final String USER_AGENT = "Mozilla/5.0";
-    //private static final String CONTENT_TYPE = "application/json";
 
     @Override
     public String doInBackground(String[] arguments) {
