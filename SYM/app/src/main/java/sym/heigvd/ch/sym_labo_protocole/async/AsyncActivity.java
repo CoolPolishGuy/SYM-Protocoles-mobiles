@@ -1,6 +1,5 @@
 package sym.heigvd.ch.sym_labo_protocole.async;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,14 +7,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import sym.heigvd.ch.sym_labo_protocole.MainActivity;
 import sym.heigvd.ch.sym_labo_protocole.R;
-import sym.heigvd.ch.sym_labo_protocole.object.ObjectActivity;
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
 
 public class AsyncActivity extends AppCompatActivity {
@@ -27,6 +20,7 @@ public class AsyncActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_async);
 
@@ -42,16 +36,18 @@ public class AsyncActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                if(spinner.getSelectedItem().toString().equals(getString(R.string.XML))) {
-                    toSendData.setText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                        "<!DOCTYPE directorySYSTEM \"http://sym.iict.ch/directory.dtd\">\n" +
-                        "<directory />");
-                }
-                else if(spinner.getSelectedItem().toString().equals(getString(R.string.plain))) {
-                    toSendData.setText("I'm some plain text and I like it !");
-                }
-                else {
-                    toSendData.setText("{ \"test\": \"toto\"}");
+                // Original text setting on spinner selection
+                if (spinner.getSelectedItem().toString().equals(getString(R.string.XML))) {
+
+                    toSendData.setText(R.string.xml_default_fill);
+
+                } else if (spinner.getSelectedItem().toString().equals(getString(R.string.plain))) {
+
+                    toSendData.setText(R.string.plain_default_fill);
+
+                } else {
+
+                    toSendData.setText(R.string.json_default_fill);
                 }
             }
 
@@ -61,32 +57,31 @@ public class AsyncActivity extends AppCompatActivity {
             }
         });
 
-        // Sender settings
-        final AsyncSendRequest sender = new AsyncSendRequest();
-        sender.setCommunicationEventListener(new CommunicationEventListener() {
-            public boolean handleServerResponse(final String response) {
-
-                // TODO problème envoyé 2 trucs d'affilés
-
-                // Code de traitement de la réponse – dans le UI-Thread
-                AsyncActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Update view
-                        receivedData.setText(response);
-                    }
-                });
-
-                return true;
-            }
-        });
-
-        // Action associated to "Async" button
+        // "Asynch" button listener
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // Recuperation of languages parameter (url + content)
                 String[] languageParameters = recuperateLanguage();
+
+                // Sender settings
+                final AsyncSendRequest sender = new AsyncSendRequest();
+                sender.setCommunicationEventListener(new CommunicationEventListener() {
+                    public boolean handleServerResponse(final String response) {
+
+                        // Code de traitement de la réponse – dans le UI-Thread
+                        AsyncActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Update view
+                                receivedData.setText(response);
+                            }
+                        });
+
+                        return true;
+                    }
+                });
 
                 sender.execute(toSendData.getText().toString(), languageParameters[0], languageParameters[1]);
             }
@@ -100,19 +95,19 @@ public class AsyncActivity extends AppCompatActivity {
         String contentType;
 
         switch (spinnerText) {
-            case "JSON" :
+            case "JSON":
                 url = "http://sym.iict.ch/rest/json";
                 contentType = "application/json";
                 break;
-            case "XML" :
+            case "XML":
                 url = "http://sym.iict.ch/rest/xml";
                 contentType = "application/xml";
                 break;
-            case "Plain text" :
+            case "Plain text":
                 url = "http://sym.iict.ch/rest/txt";
                 contentType = "text/plain";
                 break;
-            default :
+            default:
                 url = "http://sym.iict.ch/rest/json";
                 contentType = "application/json";
                 break;

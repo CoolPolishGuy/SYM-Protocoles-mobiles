@@ -26,29 +26,30 @@ public class CompressedActivity extends AppCompatActivity {
         this.toSendData = (EditText) findViewById(R.id.toSendData);
         this.send = (Button) findViewById(R.id.send);
 
-        // Sender settings
-        final AsyncSendRequest sender = new AsyncSendRequest();
-        sender.setCommunicationEventListener(new CommunicationEventListener() {
-            public boolean handleServerResponse(final String response) {
-
-                // Code de traitement de la réponse – dans le UI-Thread
-                CompressedActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Update view
-                        receivedData.setText(response);
-                    }
-                });
-                // TODO Et là on retourne quoi?
-                return true;
-            }
-        });
-
-        // Action associated to "Async" button
+        // "Compressed" button listener
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sender.execute(toSendData.getText().toString(), "http://sym.iict.ch/rest/json");
+
+            // Sender settings
+            final AsyncSendRequest sender = new AsyncSendRequest();
+            sender.setCommunicationEventListener(new CommunicationEventListener() {
+                public boolean handleServerResponse(final String response) {
+
+                    // Code de traitement de la réponse – dans le UI-Thread
+                    CompressedActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Update view
+                            receivedData.setText(response);
+                        }
+                    });
+                    // TODO Et là on retourne quoi?
+                    return true;
+                }
+            });
+
+            sender.execute(toSendData.getText().toString(), "http://sym.iict.ch/rest/json");
             }
         });
     }
