@@ -61,34 +61,34 @@ public class AsyncActivity extends AppCompatActivity {
             }
         });
 
-        // Sender settings
-        final AsyncSendRequest sender = new AsyncSendRequest();
-        sender.setCommunicationEventListener(new CommunicationEventListener() {
-            public boolean handleServerResponse(final String response) {
-
-                // TODO problème envoyé 2 trucs d'affilés
-
-                // Code de traitement de la réponse – dans le UI-Thread
-                AsyncActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Update view
-                        receivedData.setText(response);
-                    }
-                });
-
-                return true;
-            }
-        });
-
-        // Action associated to "Async" button
+        // "Asynch" button listener
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String[] languageParameters = recuperateLanguage();
+            String[] languageParameters = recuperateLanguage();
 
-                sender.execute(toSendData.getText().toString(), languageParameters[0], languageParameters[1]);
+            // Sender settings
+            final AsyncSendRequest sender = new AsyncSendRequest();
+            sender.setCommunicationEventListener(new CommunicationEventListener() {
+                public boolean handleServerResponse(final String response) {
+
+                    // TODO problème envoyé 2 trucs d'affilés
+
+                    // Code de traitement de la réponse – dans le UI-Thread
+                    AsyncActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Update view
+                            receivedData.setText(response);
+                        }
+                    });
+
+                    return true;
+                }
+            });
+
+            sender.execute(toSendData.getText().toString(), languageParameters[0], languageParameters[1]);
             }
         });
     }
