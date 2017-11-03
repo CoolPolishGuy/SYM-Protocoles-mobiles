@@ -39,15 +39,15 @@ public class AsyncActivity extends AppCompatActivity {
                 // Original text setting on spinner selection
                 if (spinner.getSelectedItem().toString().equals(getString(R.string.XML))) {
 
-                    toSendData.setText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                        "<!DOCTYPE directorySYSTEM \"http://sym.iict.ch/directory.dtd\">\n" +
-                        "<directory />");
+                    toSendData.setText(R.string.xml_default_fill);
+
                 } else if (spinner.getSelectedItem().toString().equals(getString(R.string.plain))) {
 
-                    toSendData.setText("I'm some plain text and I like it !");
+                    toSendData.setText(R.string.plain_default_fill);
+
                 } else {
 
-                    toSendData.setText("{ \"test\": \"toto\"}");
+                    toSendData.setText(R.string.json_default_fill);
                 }
             }
 
