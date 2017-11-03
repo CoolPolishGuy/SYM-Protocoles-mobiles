@@ -24,6 +24,7 @@ public class AsyncSendRequest extends AsyncTask<String, String, String> {
 
     @Override
     public void onPostExecute(String result) {
+
         super.onPostExecute(result);
         listener.handleServerResponse(result);
     }
@@ -33,6 +34,7 @@ public class AsyncSendRequest extends AsyncTask<String, String, String> {
         String answer = null;
 
         try {
+
             // Connection opening
             URL url_object = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) url_object.openConnection();
@@ -66,6 +68,7 @@ public class AsyncSendRequest extends AsyncTask<String, String, String> {
                 in.close();
             }
             else {
+
                 // Printing the response message
                 answer = connection.getResponseMessage();
             }
