@@ -55,7 +55,7 @@ public class CompressSendRequest extends AsyncTask<String, String, String> {
 
 
 
-            /*byte[] input = request.getBytes("UTF-8");
+            byte[] input = request.getBytes("UTF-8");
             byte[] output = new byte[1024];
             Deflater d = new Deflater();
             d.setInput(input);
@@ -68,8 +68,8 @@ public class CompressSendRequest extends AsyncTask<String, String, String> {
             OutputStream os = connection.getOutputStream();
             os.write(output);
             os.flush();
-            os.close();*/
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(request.length());
+            os.close();
+            /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(request.length());
             GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
 
             gzipOutputStream.write(request.getBytes());
@@ -83,7 +83,7 @@ public class CompressSendRequest extends AsyncTask<String, String, String> {
             OutputStream os = connection.getOutputStream();
             os.write(compressed);
             os.flush();
-            os.close();
+            os.close();*/
 
 
             // Recuperate the answer
