@@ -6,9 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import com.google.gson.Gson;
+import com.thoughtworks.xstream.XStream;
 
 import sym.heigvd.ch.sym_labo_protocole.R;
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
@@ -20,11 +20,9 @@ public class ObjectActivity extends AppCompatActivity {
     private EditText age;
     private RadioButton male;
     private RadioButton female;
-    private Spinner serializazion;
+    private Spinner serialization;
     private Button send;
     private EditText receivedData;
-
-    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +36,7 @@ public class ObjectActivity extends AppCompatActivity {
         this.age = (EditText) findViewById(R.id.age);
         this.male = (RadioButton) findViewById(R.id.male);
         this.female = (RadioButton) findViewById(R.id.female);
-        this.serializazion = (Spinner) findViewById(R.id.spinner);
+        this.serialization = (Spinner) findViewById(R.id.spinner);
         this.send = (Button) findViewById(R.id.send);
         this.receivedData = (EditText) findViewById(R.id.receivedData);
 
@@ -57,12 +55,23 @@ public class ObjectActivity extends AppCompatActivity {
                             @Override
                             public void run() {
 
-                                // Deserialization dont work...
-                                // Student recievedtudent = gson.fromJson(response, Student.class);
-                                // receivedData.setText(recievedtudent.toString());
+                                if(String.valueOf(serialization.getSelectedItem()).equals("XML")) {
+                                    receivedData.setText(response);
+                                }
+                                else {
 
-                                // Update view
-                                receivedData.setText(response);
+                                    // Parsing of the server's response to get the JSON
+                                    String beginningOfJSON = "{";
+                                    String beginningOfServerInfo = ",\"infos\"";
+
+                                    String parsedJson = response.substring(response.indexOf(beginningOfJSON), response.indexOf(beginningOfServerInfo)) + "}";
+
+                                    // Deserialization
+                                    Student receivedStudent = new Gson().fromJson(parsedJson, Student.class);
+
+                                    // Update view
+                                    receivedData.setText(receivedStudent.toString());
+                                }
                             }
                         });
 
@@ -94,11 +103,24 @@ public class ObjectActivity extends AppCompatActivity {
                 }
                 else {
 
-                    // GSONification + sending to the server
-                    String url = "http://sym.iict.ch/rest/json";
-                    String contentType = "application/json";
+                    if(String.valueOf(serialization.getSelectedItem()).equals("XML")) {
 
-                    sender.execute(gson.toJson(student), url, contentType);
+                        String url = "http://sym.iict.ch/rest/xml";
+                        String contentType = "application/xml";
+
+                        XStream xstream = new XStream();
+                        xstream.alias("student", Student.class);
+
+                        sender.execute(getString(R.string.xml_default_fill) + xstream.toXML(student), url, contentType);
+                    }
+                    else {
+
+                        // GSONification + sending to the server
+                        String url = "http://sym.iict.ch/rest/json";
+                        String contentType = "application/json";
+
+                        sender.execute(new Gson().toJson(student), url, contentType);
+                    }
                 }
             }
         });
