@@ -3,7 +3,10 @@ package sym.heigvd.ch.sym_labo_protocole.compressed;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.io.BufferedReader;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -24,7 +27,6 @@ public class CompressSendRequest extends AsyncTask<String, String, String> {
 
     @Override
     public String doInBackground(String[] arguments) {
-        //String compressed = DeflaterOutputStream(arguments[0]);
         return sendRequest(arguments[0], arguments[1]);
     }
 
@@ -46,13 +48,43 @@ public class CompressSendRequest extends AsyncTask<String, String, String> {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("User-Agent", USER_AGENT);
             connection.setRequestProperty("Content-Type", CONTENT_TYPE);
+            //connection.setRequestProperty("X-Content-Encoding","deflate");
             connection.setDoOutput(true);
 
             // Write of the data
+
+
+
+            /*byte[] input = request.getBytes("UTF-8");
+            byte[] output = new byte[1024];
+            Deflater d = new Deflater();
+            d.setInput(input);
+            d.finish();
+            int compressedDataLength = d.deflate(output);
+            d.end();
+
+
+
             OutputStream os = connection.getOutputStream();
-            os.write(request.getBytes());
+            os.write(output);
+            os.flush();
+            os.close();*/
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(request.length());
+            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
+
+            gzipOutputStream.write(request.getBytes());
+            gzipOutputStream.close();
+
+
+
+            byte[] compressed = byteArrayOutputStream.toByteArray();
+            byteArrayOutputStream.close();
+
+            OutputStream os = connection.getOutputStream();
+            os.write(compressed);
             os.flush();
             os.close();
+
 
             // Recuperate the answer
             int responseCode = connection.getResponseCode();
@@ -61,14 +93,31 @@ public class CompressSendRequest extends AsyncTask<String, String, String> {
             if (responseCode == HttpURLConnection.HTTP_OK) {
 
                 // Reading body of the answer
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
 
-                while ((inputLine = in.readLine()) != null) {
-                    answer += inputLine;
+                // Decompress the bytes
+
+                Inflater decompresser = new Inflater();
+                //decompresser.setInput(output, 0, compressedDataLength);
+                byte[] result = new byte[100];
+                int resultLength = decompresser.inflate(result);
+                decompresser.end();
+                String outputString = new String(result, 0, resultLength, "UTF-8");
+
+
+                /*Inflater decompresser = new Inflater();
+                decompresser.setInput(output, 0, compressedDataLength);
+
+                InputStream in = new InputStreamReader(connection.getInputStream());
+                InflaterInputStream ini =  new InputStreamReader(in);
+                ByteArrayOutputStream bout =new ByteArrayOutputStream(512);
+                int inputLine;
+
+
+                while ((inputLine = ini.read()) != -1) {
+                    bout.write(inputLine);
                 }
 
-                in.close();
+                in.close();*/
             }
             else {
                 // Printing the response message

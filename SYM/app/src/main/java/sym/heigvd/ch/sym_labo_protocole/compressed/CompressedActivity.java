@@ -19,12 +19,13 @@ public class CompressedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_async);
+        setContentView(R.layout.activity_compressed);
 
         // Recuperate UI things
         this.receivedData = (EditText) findViewById(R.id.receivedData);
         this.toSendData = (EditText) findViewById(R.id.toSendData);
         this.send = (Button) findViewById(R.id.send);
+        toSendData.setText("{\"text\":\"toto\"}");
 
         // "Compressed" button listener
         send.setOnClickListener(new View.OnClickListener() {
@@ -32,7 +33,7 @@ public class CompressedActivity extends AppCompatActivity {
             public void onClick(View v) {
 
             // Sender settings
-            final AsyncSendRequest sender = new AsyncSendRequest();
+            final CompressSendRequest sender = new CompressSendRequest();
             sender.setCommunicationEventListener(new CommunicationEventListener() {
                 public boolean handleServerResponse(final String response) {
 
