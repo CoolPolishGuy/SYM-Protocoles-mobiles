@@ -17,7 +17,7 @@
     <string name="plain">Plain text</string>
     <string name="xml_default_fill">&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt; &lt;!DOCTYPE directory SYSTEM \"http://sym.iict.ch/directory.dtd\"&gt; &lt;directory /&gt;</string>
     <string name="plain_default_fill">I\'m some plain text and I like it !</string>
-    <string name="json_default_fill">{ "test": "toto" }</string>
+    <string name="json_default_fill">{ \"test\": \"toto\" }</string>
     <string name="first_name">First name</string>
     <string name="name">Name</string>
     <string name="age">Age</string>

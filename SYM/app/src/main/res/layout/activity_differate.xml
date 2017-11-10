@@ -42,18 +42,6 @@
         android:text="@string/send"
         android:textColor="@android:color/holo_green_dark" />
 
-    <EditText
-        android:id="@+id/receivedData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/redbox"
-        android:enabled="false"
-        android:gravity="top|start"
-        android:hint="@string/received"
-        android:maxLines="5"
-        android:minLines="5"
-        android:padding="10dp" />
-
     <Button
         android:id="@+id/stopSent"
         android:layout_width="match_parent"
