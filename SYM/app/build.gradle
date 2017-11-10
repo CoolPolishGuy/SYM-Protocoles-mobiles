@@ -28,7 +28,4 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile 'com.google.code.gson:gson:2.8.2'
-    compile ('com.thoughtworks.xstream:xstream:1.4.7') {
-        exclude group: 'xmlpull', module: 'xmlpull'
-    }
 }

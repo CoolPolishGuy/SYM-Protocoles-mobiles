@@ -24,18 +24,13 @@
     <string name="man">Male</string>
     <string name="woman">Female</string>
     <string name="create">Create a new student</string>
-    <string name="serialization">Choose the serialization type</string>
+    <string name="serialization">JSON will be used for (de)serialization</string>
     <string name="incorrectValue">Incorrect values for the fields of the new student</string>
 
     <string-array name="language_array">
         <item>@string/JSON</item>
         <item>@string/XML</item>
         <item>@string/plain</item>
-    </string-array>
-
-    <string-array name="serialization_array">
-        <item>@string/JSON</item>
-        <item>@string/XML</item>
     </string-array>
 
     <string-array name="sex_array">

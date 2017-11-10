@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.google.gson.Gson;
-import com.thoughtworks.xstream.XStream;
 
 import sym.heigvd.ch.sym_labo_protocole.R;
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
@@ -55,23 +54,17 @@ public class ObjectActivity extends AppCompatActivity {
                             @Override
                             public void run() {
 
-                                if(String.valueOf(serialization.getSelectedItem()).equals("XML")) {
-                                    receivedData.setText(response);
-                                }
-                                else {
+                                // Parsing of the server's response to get the JSON
+                                String beginningOfJSON = "{";
+                                String beginningOfServerInfo = ",\"infos\"";
 
-                                    // Parsing of the server's response to get the JSON
-                                    String beginningOfJSON = "{";
-                                    String beginningOfServerInfo = ",\"infos\"";
+                                String parsedJson = response.substring(response.indexOf(beginningOfJSON), response.indexOf(beginningOfServerInfo)) + "}";
 
-                                    String parsedJson = response.substring(response.indexOf(beginningOfJSON), response.indexOf(beginningOfServerInfo)) + "}";
+                                // Deserialization
+                                Student receivedStudent = new Gson().fromJson(parsedJson, Student.class);
 
-                                    // Deserialization
-                                    Student receivedStudent = new Gson().fromJson(parsedJson, Student.class);
-
-                                    // Update view
-                                    receivedData.setText(receivedStudent.toString());
-                                }
+                                // Update view
+                                receivedData.setText(receivedStudent.toString());
                             }
                         });
 
@@ -102,25 +95,11 @@ public class ObjectActivity extends AppCompatActivity {
                     receivedData.setText(R.string.incorrectValue);
                 }
                 else {
+                    // GSONification + sending to the server
+                    String url = "http://sym.iict.ch/rest/json";
+                    String contentType = "application/json";
 
-                    if(String.valueOf(serialization.getSelectedItem()).equals("XML")) {
-
-                        String url = "http://sym.iict.ch/rest/xml";
-                        String contentType = "application/xml";
-
-                        XStream xstream = new XStream();
-                        xstream.alias("student", Student.class);
-
-                        sender.execute(getString(R.string.xml_default_fill) + xstream.toXML(student), url, contentType);
-                    }
-                    else {
-
-                        // GSONification + sending to the server
-                        String url = "http://sym.iict.ch/rest/json";
-                        String contentType = "application/json";
-
-                        sender.execute(new Gson().toJson(student), url, contentType);
-                    }
+                    sender.execute(new Gson().toJson(student), url, contentType);
                 }
             }
         });

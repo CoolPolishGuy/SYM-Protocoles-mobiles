@@ -93,15 +93,9 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="15dp"
         android:text="@string/serialization"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/holo_green_dark"
         android:textSize="17sp"
-        android:textStyle="italic"/>
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:entries="@array/serialization_array" />
+        />
 
     <Button
         android:id="@+id/send"
