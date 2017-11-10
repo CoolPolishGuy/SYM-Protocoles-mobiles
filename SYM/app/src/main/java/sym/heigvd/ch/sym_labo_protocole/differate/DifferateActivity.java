@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +16,14 @@ import java.util.TimerTask;
 import sym.heigvd.ch.sym_labo_protocole.R;
 import sym.heigvd.ch.sym_labo_protocole.async.AsyncActivity;
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
+import sym.heigvd.ch.sym_labo_protocole.utils.RequestUtils;
 
 
 /**
  * This activity send requests stored in a list every x seconds
- * This is used to simulate a differate send when the device isn't connected to internet
- * and therefore can't send http requests to the server.
- * @author Tano Iannetta
- * //todo ajout fonctionnalité lara pour les différents types
+ * This is used to simulate a differate request when the device isn't connected to internet
+ * and therefore can't send http requests to the server immediately.
+ * @author Tano Iannetta, Lara Chauffoureaux, Wojciech Myszkorowki
  */
 public class DifferateActivity extends AppCompatActivity {
 
@@ -55,6 +56,7 @@ public class DifferateActivity extends AppCompatActivity {
         this.send = (Button) findViewById(R.id.send);
         this.stopSend = (Button) findViewById(R.id.stopSent);
 
+
         launchTimer();
 
         // action associated to "send" button
@@ -84,7 +86,7 @@ public class DifferateActivity extends AppCompatActivity {
 
     /**
      * Start a timer that send the requests in the list
-     * every 10 seconds
+     * every 10 seconds after a delay of 10 seconds
      */
     private void launchTimer()
     {
@@ -117,7 +119,7 @@ public class DifferateActivity extends AppCompatActivity {
                                 }
                             });
                             // send request
-                            sender.execute(request, "http://sym.iict.ch/rest/txt");
+                            sender.execute(request, "http://sym.iict.ch/rest/txt", "text/plain");
                         }
                         differateRequests.clear();
                     }
