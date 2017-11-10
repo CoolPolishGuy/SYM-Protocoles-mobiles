@@ -9,66 +9,64 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Utility class to send request
- * @author Tano Iannetta, Lara Chauffoureaux and Wojciech Myszkorovski
+ * Utility class to send an http request
+ *
+ * @author Tano Iannetta, Lara Chauffoureaux, Wojciech Myszkorovski
  */
-public class RequestUtils{
+public class RequestUtils {
 
-    /**
-     * HTTP parameters
-     */
+    // HTTP parameters and headers
     private static final String METHOD = "POST";
     private static final String USER_AGENT = "Mozilla/5.0";
 
     /**
-     * Send a request
-     * @return response of the request
+     * Static method sending a post request to a given url.
+     *
+     * @param request     The data to send
+     * @param url         The URL where to send the request
+     * @param contentType The content-type of the data
+     * @return The server's response body if everything was ok, the error code otherwise
      */
     public static String sendRequest(String request, String url, String contentType) {
 
         String response = "";
 
         try {
-            // connection
+            // Connection opening
             URL url_object = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) url_object.openConnection();
 
-            // headers
+            // Setting of the headers and method
             connection.setRequestMethod(METHOD);
             connection.setRequestProperty("User-Agent", USER_AGENT);
             connection.setRequestProperty("Content-Type", contentType);
             connection.setDoOutput(true);
 
-            // send
+            // Setting of the data and sending to the server
             OutputStream os = connection.getOutputStream();
             os.write(request.getBytes());
             os.flush();
             os.close();
 
-            // response
+            // Response code recuperation
             int responseCode = connection.getResponseCode();
 
-            // ok
-            if(responseCode == HttpURLConnection.HTTP_OK)
-            {
-                // reading answer
+            // If everything went well
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Reading response
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String line;
 
-                while ((line = in.readLine()) != null)
-                {
+                while ((line = in.readLine()) != null) {
                     response += line;
                 }
                 in.close();
-            }
-            else
-            {
-                // response message
+            } else {
+                // We return the error code
                 response = connection.getResponseMessage();
             }
 
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(RequestUtils.class.getName(), "error: " + e.getMessage(), e);
             response = e.getMessage();
         }

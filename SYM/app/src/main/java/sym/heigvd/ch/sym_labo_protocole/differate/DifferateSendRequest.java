@@ -1,17 +1,20 @@
 package sym.heigvd.ch.sym_labo_protocole.differate;
 
 import android.os.AsyncTask;
+
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
 import sym.heigvd.ch.sym_labo_protocole.utils.RequestUtils;
 
 /**
- * Send a request to the server
- * This class is similar to the AsyncSendRequest, however we want to keep
- * those classes separate to have a more scalable implantation
- * @author Tano Iannetta, Lara Chauffoureaux and Wojciech Myszkorowski
+ * Java asynch activity used to send a request to the server.
+ * This class is similar to the AsyncSendRequest and ObjectSendRequest, however we want to keep
+ * those classes separate to have a more scalable implementation.
+ *
+ * @author Tano Iannetta, Lara Chauffoureaux, Wojciech Myszkorowski
  */
-public class DifferateSendRequest  extends AsyncTask<String,String,String> {
-    private CommunicationEventListener listener;
+public class DifferateSendRequest extends AsyncTask<String, String, String> {
+
+    private CommunicationEventListener listener;    // The listener to notify
 
     @Override
     protected String doInBackground(String... arguments) {
@@ -25,8 +28,7 @@ public class DifferateSendRequest  extends AsyncTask<String,String,String> {
         listener.handleServerResponse(result);
     }
 
-    public void setCommunicationEventListener(CommunicationEventListener l)
-    {
+    public void setCommunicationEventListener(CommunicationEventListener l) {
         this.listener = l;
     }
 }

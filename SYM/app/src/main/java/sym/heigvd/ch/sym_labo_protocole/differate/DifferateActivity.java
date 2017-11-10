@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,35 +13,35 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import sym.heigvd.ch.sym_labo_protocole.R;
-import sym.heigvd.ch.sym_labo_protocole.async.AsyncActivity;
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
-import sym.heigvd.ch.sym_labo_protocole.utils.RequestUtils;
-
 
 /**
- * This activity send requests stored in a list every x seconds
+ * This activity allow the user to send requests stored in a list every x seconds.
  * This is used to simulate a differate request when the device isn't connected to internet
  * and therefore can't send http requests to the server immediately.
+ *
  * @author Tano Iannetta, Lara Chauffoureaux, Wojciech Myszkorowki
  */
 public class DifferateActivity extends AppCompatActivity {
 
-    // interface
-    private EditText dataToSend;
-    private Button send;
-    private Button stopSend;
+    private EditText dataToSend;    // Edit containing the data of the user
+    private Button stopSend;        // Stop button
+    private Button send;            // Send button
+    private Timer timer;            // Timer regulating the list send
 
-    private Timer timer;
+    // List containing the request to send since the last timeout
     private List<String> differateRequests = new ArrayList<>();
 
     @Override
     protected void onPause() {
         super.onPause();
-        if(timer != null)
-        {
+
+        // If the application is stopped data aren't send anymore
+        if (timer != null) {
             Log.e("Timer", "timer canceled");
             timer.cancel();
         }
+
         finish();
     }
 
@@ -56,27 +55,26 @@ public class DifferateActivity extends AppCompatActivity {
         this.send = (Button) findViewById(R.id.send);
         this.stopSend = (Button) findViewById(R.id.stopSent);
 
-
         launchTimer();
 
-        // action associated to "send" button
+        // Listener associated to "send" button
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String req = String.valueOf(dataToSend.getText());
-                if(req.length() != 0)
-                {
-                    // add to the list
+
+                // If content isn't empty, we add the request to the list
+                if (req.length() != 0) {
                     differateRequests.add(req);
                 }
             }
         });
-        // action associated to "stop send" button
+
+        // Listener associated to "stop send" button
         stopSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(timer != null)
-                {
+                if (timer != null) {
                     Log.e("Timer", "timer canceled");
                     timer.cancel();
                 }
@@ -88,20 +86,18 @@ public class DifferateActivity extends AppCompatActivity {
      * Start a timer that send the requests in the list
      * every 10 seconds after a delay of 10 seconds
      */
-    private void launchTimer()
-    {
-        if(timer == null) // no timer already started
-        {
+    private void launchTimer() {
+        // If no timer already started
+        if (timer == null) {
             timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
 
-                    if(!differateRequests.isEmpty())
-                    {
-                        // send requests
-                        for(String request : differateRequests)
-                        {
+                    // If request list isn't empty we send it
+                    if (!differateRequests.isEmpty()) {
+                        // Send requests
+                        for (String request : differateRequests) {
                             // Sender settings
                             final DifferateSendRequest sender = new DifferateSendRequest();
                             sender.setCommunicationEventListener(new CommunicationEventListener() {
@@ -118,13 +114,16 @@ public class DifferateActivity extends AppCompatActivity {
                                     return true;
                                 }
                             });
-                            // send request
+
+                            // Send request
                             sender.execute(request, "http://sym.iict.ch/rest/txt", "text/plain");
                         }
+
+                        // List emptied for the next batch
                         differateRequests.clear();
                     }
                 }
-            },10000,10000); // after 10sec every 10sec
+            }, 10000, 10000); // After 10sec every 10sec
         }
     }
 }
