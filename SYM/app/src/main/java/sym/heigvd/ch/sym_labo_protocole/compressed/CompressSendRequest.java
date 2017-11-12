@@ -1,19 +1,29 @@
 package sym.heigvd.ch.sym_labo_protocole.compressed;
 
 import android.os.AsyncTask;
+import android.os.SystemClock;
+import android.text.style.AlignmentSpan;
 import android.util.Log;
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
 import java.util.zip.*;
 
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
+
+import static java.util.zip.Deflater.BEST_COMPRESSION;
 
 /**
  * Created by wojtek on 10/27/17.
@@ -48,43 +58,18 @@ public class CompressSendRequest extends AsyncTask<String, String, String> {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("User-Agent", USER_AGENT);
             connection.setRequestProperty("Content-Type", CONTENT_TYPE);
-            //connection.setRequestProperty("X-Content-Encoding","deflate");
+            connection.setRequestProperty("X-Network","CSD");
+            connection.setRequestProperty("X-Content-Encoding","deflate");
+
             connection.setDoOutput(true);
 
-            // Write of the data
-
-
-
-            byte[] input = request.getBytes("UTF-8");
-            byte[] output = new byte[1024];
-            Deflater d = new Deflater();
-            d.setInput(input);
-            d.finish();
-            int compressedDataLength = d.deflate(output);
-            d.end();
-
-
-
             OutputStream os = connection.getOutputStream();
-            os.write(output);
-            os.flush();
-            os.close();
-            /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(request.length());
-            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
+            // Write of the data & compression
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new DeflaterOutputStream(os, new Deflater(BEST_COMPRESSION, true))));
 
-            gzipOutputStream.write(request.getBytes());
-            gzipOutputStream.close();
-
-
-
-            byte[] compressed = byteArrayOutputStream.toByteArray();
-            byteArrayOutputStream.close();
-
-            OutputStream os = connection.getOutputStream();
-            os.write(compressed);
-            os.flush();
-            os.close();*/
-
+            out.write(request);
+            out.flush();
+            out.close();
 
             // Recuperate the answer
             int responseCode = connection.getResponseCode();
@@ -93,31 +78,17 @@ public class CompressSendRequest extends AsyncTask<String, String, String> {
             if (responseCode == HttpURLConnection.HTTP_OK) {
 
                 // Reading body of the answer
-
                 // Decompress the bytes
+                InputStream in = connection.getInputStream();
+                in = new InflaterInputStream(in,new Inflater(true));
+                BufferedReader incoming = new BufferedReader(new InputStreamReader(in));
 
-                Inflater decompresser = new Inflater();
-                //decompresser.setInput(output, 0, compressedDataLength);
-                byte[] result = new byte[100];
-                int resultLength = decompresser.inflate(result);
-                decompresser.end();
-                String outputString = new String(result, 0, resultLength, "UTF-8");
-
-
-                /*Inflater decompresser = new Inflater();
-                decompresser.setInput(output, 0, compressedDataLength);
-
-                InputStream in = new InputStreamReader(connection.getInputStream());
-                InflaterInputStream ini =  new InputStreamReader(in);
-                ByteArrayOutputStream bout =new ByteArrayOutputStream(512);
-                int inputLine;
-
-
-                while ((inputLine = ini.read()) != -1) {
-                    bout.write(inputLine);
+                String line ;
+                while ((line = incoming.readLine()) != null) {
+                    answer+=line;
                 }
+                incoming.close();
 
-                in.close();*/
             }
             else {
                 // Printing the response message
