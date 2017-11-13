@@ -34,6 +34,7 @@ public class CompressSendRequest extends AsyncTask<String, String, String> {
     private CommunicationEventListener listener;
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String CONTENT_TYPE = "application/json";
+    private static final String END_OF_RESP = "PHP_SELF";
 
     @Override
     public String doInBackground(String[] arguments) {
