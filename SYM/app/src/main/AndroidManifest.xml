@@ -20,7 +20,7 @@
         <activity android:name=".async.AsyncActivity" />
         <activity android:name=".object.ObjectActivity" />
         <activity android:name=".compressed.CompressedActivity" />
-        <activity android:name=".differate.DifferateActivity"></activity>
+        <activity android:name=".differate.DifferateActivity" android:launchMode="singleInstance"></activity>
     </application>
 
 </manifest>

@@ -6,25 +6,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import com.google.gson.Gson;
 
 import sym.heigvd.ch.sym_labo_protocole.R;
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
 
+/**
+ * This activity allow the user to send a serialized object to the server.
+ * The serialization is automatic and done with JSON.
+ * Once the server's response is received deserialization is done and the resulting object is
+ * toString in the bottom EditText.
+ *
+ * @author Tano Iannetta, Lara Chauffoureaux, Wojciech Myszkorowki
+ */
 public class ObjectActivity extends AppCompatActivity {
 
-    private EditText firstname;
-    private EditText name;
-    private EditText age;
-    private RadioButton male;
-    private RadioButton female;
-    private Spinner serializazion;
-    private Button send;
-    private EditText receivedData;
-
-    private Gson gson = new Gson();
+    private EditText firstname;     // Edit text containing the firstname
+    private EditText name;          // Edit text containing the name
+    private EditText age;           // Edit text containing the age
+    private RadioButton male;       // Male radio button
+    private RadioButton female;     // Female radio button
+    private EditText receivedData;  // Edit text used to print the received object
+    private Button send;            // Send button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,6 @@ public class ObjectActivity extends AppCompatActivity {
         this.age = (EditText) findViewById(R.id.age);
         this.male = (RadioButton) findViewById(R.id.male);
         this.female = (RadioButton) findViewById(R.id.female);
-        this.serializazion = (Spinner) findViewById(R.id.spinner);
         this.send = (Button) findViewById(R.id.send);
         this.receivedData = (EditText) findViewById(R.id.receivedData);
 
@@ -57,12 +59,17 @@ public class ObjectActivity extends AppCompatActivity {
                             @Override
                             public void run() {
 
-                                // Deserialization dont work...
-                                // Student recievedtudent = gson.fromJson(response, Student.class);
-                                // receivedData.setText(recievedtudent.toString());
+                                // Parsing of the server's response to get the JSON
+                                String beginningOfJSON = "{";
+                                String endOfJSON = ",\"infos\"";
+
+                                String parsedJson = response.substring(response.indexOf(beginningOfJSON), response.indexOf(endOfJSON)) + "}";
+
+                                // Deserialization
+                                Student receivedStudent = new Gson().fromJson(parsedJson, Student.class);
 
                                 // Update view
-                                receivedData.setText(response);
+                                receivedData.setText(receivedStudent.toString());
                             }
                         });
 
@@ -93,12 +100,11 @@ public class ObjectActivity extends AppCompatActivity {
                     receivedData.setText(R.string.incorrectValue);
                 }
                 else {
-
                     // GSONification + sending to the server
                     String url = "http://sym.iict.ch/rest/json";
                     String contentType = "application/json";
 
-                    sender.execute(gson.toJson(student), url, contentType);
+                    sender.execute(new Gson().toJson(student), url, contentType);
                 }
             }
         });

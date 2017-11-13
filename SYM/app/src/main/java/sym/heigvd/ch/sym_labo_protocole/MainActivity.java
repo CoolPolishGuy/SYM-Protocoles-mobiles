@@ -7,19 +7,25 @@ import android.view.View;
 import android.widget.Button;
 
 import sym.heigvd.ch.sym_labo_protocole.async.AsyncActivity;
+import sym.heigvd.ch.sym_labo_protocole.compressed.CompressedActivity;
 import sym.heigvd.ch.sym_labo_protocole.differate.DifferateActivity;
 import sym.heigvd.ch.sym_labo_protocole.object.ObjectActivity;
 
+/**
+ * Main activity of the application, offer 4 buttons to the user to allow him to choose the
+ * activity to open.
+ *
+ * @author Tano Iannetta, Lara Chauffoureaux, Wojciech Myszkorowski
+ */
 public class MainActivity extends AppCompatActivity {
 
     // For logging purposes
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    // Button of the main page
-    private Button buttonAsync;
-    private Button buttonDifferate;
-    private Button buttonObject;
-    private Button buttonCompressed;
+    private Button buttonAsync;         // Async activity button
+    private Button buttonDifferate;     // Differate activity button
+    private Button buttonObject;        // Object activity button
+    private Button buttonCompressed;    // Compressed activity button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Recuperation of button reference in the view
+        // Recuperate UI things
         this.buttonAsync = (Button) findViewById(R.id.buttonAsync);
         this.buttonDifferate = (Button) findViewById(R.id.buttonDifferate);
         this.buttonObject = (Button) findViewById(R.id.buttonObject);
         this.buttonCompressed = (Button) findViewById(R.id.buttonCompressed);
 
-        // Action associated to "Async" button
+        // Listener associated to "Async" button
         buttonAsync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Action associated to "Differate" button
+        // Listener associated to "Differate" button
         buttonDifferate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Action associated to "Object" button
+        // Listener associated to "Object" button
         buttonObject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,11 +66,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Action associated to "Compressed" button
+        // Listener associated to "Compressed" button
         buttonCompressed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this, CompressedActivity.class);
+                startActivity(intent);
             }
         });
     }

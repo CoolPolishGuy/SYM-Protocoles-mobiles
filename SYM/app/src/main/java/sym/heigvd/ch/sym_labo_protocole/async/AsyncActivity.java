@@ -11,12 +11,20 @@ import android.widget.Spinner;
 import sym.heigvd.ch.sym_labo_protocole.R;
 import sym.heigvd.ch.sym_labo_protocole.utils.CommunicationEventListener;
 
+/**
+ * This activity allow the user to send requests asynchronously, the UI stay available during
+ * the transmissions.
+ * Three types of content can be send on different endpoints in the server. The content on the
+ * server response is printed when received.
+ *
+ * @author Tano Iannetta, Lara Chauffoureaux, Wojciech Myszkorowki
+ */
 public class AsyncActivity extends AppCompatActivity {
 
-    private EditText receivedData;
-    private EditText toSendData;
-    private Button send;
-    private Spinner spinner;
+    private EditText receivedData;  // Edit text with received data when available
+    private EditText toSendData;    // Edit text containing the data of the user
+    private Spinner spinner;        // Spinner for content type choice
+    private Button send;            // Button send
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +78,7 @@ public class AsyncActivity extends AppCompatActivity {
                 sender.setCommunicationEventListener(new CommunicationEventListener() {
                     public boolean handleServerResponse(final String response) {
 
-                        // Code de traitement de la réponse – dans le UI-Thread
+                        // Code of response treatment, as to be in the UI thread
                         AsyncActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -83,16 +91,24 @@ public class AsyncActivity extends AppCompatActivity {
                     }
                 });
 
+                // Sending of the request
                 sender.execute(toSendData.getText().toString(), languageParameters[0], languageParameters[1]);
             }
         });
     }
 
+    /**
+     * Private function to recuperate the selected content when the button is clicked.
+     *
+     * @return An array of strings containing url in [0] and content-type in [1]
+     */
     private String[] recuperateLanguage() {
 
-        String spinnerText = String.valueOf(spinner.getSelectedItem());
         String url;
         String contentType;
+
+        // Recuperation of the spinner value
+        String spinnerText = String.valueOf(spinner.getSelectedItem());
 
         switch (spinnerText) {
             case "JSON":

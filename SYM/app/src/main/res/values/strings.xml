@@ -17,24 +17,20 @@
     <string name="plain">Plain text</string>
     <string name="xml_default_fill">&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt; &lt;!DOCTYPE directory SYSTEM \"http://sym.iict.ch/directory.dtd\"&gt; &lt;directory /&gt;</string>
     <string name="plain_default_fill">I\'m some plain text and I like it !</string>
-    <string name="json_default_fill">{ "test": "toto" }</string>
+    <string name="json_default_fill">{ \"test\": \"toto\" }</string>
     <string name="first_name">First name</string>
     <string name="name">Name</string>
     <string name="age">Age</string>
     <string name="man">Male</string>
     <string name="woman">Female</string>
     <string name="create">Create a new student</string>
-    <string name="serialization">Choose the serialization type</string>
+    <string name="serialization">JSON will be used for (de)serialization</string>
     <string name="incorrectValue">Incorrect values for the fields of the new student</string>
 
     <string-array name="language_array">
         <item>@string/JSON</item>
         <item>@string/XML</item>
         <item>@string/plain</item>
-    </string-array>
-
-    <string-array name="serialization_array">
-        <item>@string/JSON</item>
     </string-array>
 
     <string-array name="sex_array">
