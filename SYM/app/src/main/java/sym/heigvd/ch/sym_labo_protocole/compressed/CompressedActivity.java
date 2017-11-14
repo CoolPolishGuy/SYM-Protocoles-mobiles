@@ -25,7 +25,7 @@ public class CompressedActivity extends AppCompatActivity {
         this.receivedData = (EditText) findViewById(R.id.receivedData);
         this.toSendData = (EditText) findViewById(R.id.toSendData);
         this.send = (Button) findViewById(R.id.send);
-        toSendData.setText("{\"text\":\"toto\"}");
+        toSendData.setText(R.string.json_default_fill);
 
         // "Compressed" button listener
         send.setOnClickListener(new View.OnClickListener() {
