@@ -1,3 +1,8 @@
+*.aux
+*.log
+*.out
+rapport.pdf
+*.synctex.gz
 build
 .idea
 *.iml
