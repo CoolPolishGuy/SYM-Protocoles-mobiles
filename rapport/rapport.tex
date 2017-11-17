@@ -277,8 +277,8 @@ Pour une transmission différée les mêmes critères s'appliquent.
 
 
 \section*{Question 4.3}
-On peut d'abord avoir une mauvaise synchronisation des threads entre eux. Surtout s'ils partagent des données mutuelles. Pour des raisons de programmation concurrentes l'interraction de 2 threads peut crééer des problems de famines ou interblocages par exemple.
-En théorie il est important d'avoir un thread pour une tache différente afin de bien diviser l'execution des tâches qui se suivent.
+On peut d'abord avoir une mauvaise synchronisation des threads entre eux. Surtout s'ils partagent des données mutuelles. Pour des raisons de programmation concurrente l'interraction des deux threads peut crééer des problèmes de famines ou interblocages par exemple.
+En théorie, il est important d'avoir un thread par tâche, afin de bien diviser l'exécution des tâches qui se suivent.
 
 \section*{Question 4.4}
 
@@ -305,5 +305,8 @@ compression est la plus efficace. Ces compressions ont été effectué ave un ni
 Pour ce qui est de la partie théorique il existe un procédé de plusieurs niveau qui permet de cacluler la compression théorique.
 \newline
 \url{https://www.snellman.net/blog/archive/2015-06-05-updated-zlib-benchmarks/}
+On peut constater plusieurs choses. Tout d'abord l'efficacité de compression va dépendre du type de fichier que l'on compresse. 
+\newline
+En moyenne la compression permet d'obtenir des tailles deux fois plus compacte et donc rend la compression un outil indispensable pour une communication simple et efficace.
 
 \end{document}
