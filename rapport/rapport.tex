@@ -174,9 +174,23 @@
 
 \section{Question 4.2}
 
+
+
+
+
+
 \section{Question 4.3}
 
 \section{Question 4.4}
+
+La solution multiplexée est beaucoup plus efficace. En effet, si on utilise une connexion pour chaque transmission nous aurons à chaque connexion, l'ouverture de celle-ci, l'envoie des données et puis la fermeture de la connexion. 
+
+En utilisant la solution multiplexée, nous allons ouvrir et fermer une seule connexion.
+L'inconvénient est que le serveur qui reçoit les données doit pouvoir gérer la réception de plusieurs données différentes.
+
+Pour traiter la réponse du serveur nous pouvons imaginer d'avoir un id par "données" distinctes. De cette façon, le serveur peut utiliser l'id pour associer une réponse à un élément précis.
+
+
 
 \section{Question 4.5}
 
