@@ -32,7 +32,7 @@ public class CompressedActivity extends AppCompatActivity {
         this.toSendData = (EditText) findViewById(R.id.toSendData);
         this.send = (Button) findViewById(R.id.send);
 
-        toSendData.setText(R.string.json_default_fill);
+        toSendData.setText(R.string.plain_default_fill);
 
         // "Compressed" button listener
         send.setOnClickListener(new View.OnClickListener() {
@@ -52,13 +52,13 @@ public class CompressedActivity extends AppCompatActivity {
                                 receivedData.setText(response);
                             }
                         });
-                        // TODO Et là on retourne quoi?
+
                         return true;
                     }
                 });
 
                 // Sending of the request
-                sender.execute(toSendData.getText().toString(), "http://sym.iict.ch/rest/json");
+                sender.execute(toSendData.getText().toString(), "http://sym.iict.ch/rest/txt");
             }
         });
     }

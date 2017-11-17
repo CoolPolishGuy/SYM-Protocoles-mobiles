@@ -26,7 +26,7 @@ public class CompressSendRequest extends AsyncTask<String, String, String> {
 
     private CommunicationEventListener listener;                    // The listener to notify
     private static final String USER_AGENT = "Mozilla/5.0";         // The user-agent header
-    private static final String CONTENT_TYPE = "application/json";  // The content-type header
+    private static final String CONTENT_TYPE = "text/plain";        // The content-type header
     private static final String END_OF_RESP = "PHP_SELF";           // String to find end of response
 
     @Override
