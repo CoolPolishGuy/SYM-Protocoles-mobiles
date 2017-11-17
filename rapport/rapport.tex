@@ -17,6 +17,7 @@
 \usepackage{arydshln}
 %%%  PACKAGES
 \usepackage{footnote}
+\usepackage{enumitem}
 
 \setlength\parindent{0pt}         % Taille de l'indentation
 \setcounter{tocdepth}{3}
@@ -36,6 +37,7 @@
 \definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 \definecolor{red}{rgb}{1,0,0}
 \definecolor{green}{rgb}{0,1,0}
+\definecolor{porange}{rgb}{1,0.5,0}
 
 
 %%% CODE STYLE (\lstinputlisting{stcFile.cpp} ou \begin{lstlisting} et \end{lstlisting}
@@ -145,7 +147,9 @@
     citecolor=green,        % color of links to bibliography
     filecolor=magenta,      % color of file links
     urlcolor=blue           % color of external links
-}               
+}    
+
+\lstset{escapeinside={<@}{@>}}           
 
 %%%  HEADERS & FOOTERS
 \usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
@@ -170,16 +174,104 @@
 \thispagestyle{empty}
 \clearpage
 
-\section{Question 4.1}
+\section*{Question 4.1}
 
-\section{Question 4.2}
+Actuellement notre application ne fait rien si le serveur est injoignable ou s'il retourne une erreur quelconque. Seul un message d'erreur est affiché à l'utilisateur, par exemple : 
 
-\section{Question 4.3}
+\begin{itemize}
+\item \emph{Not found} si le serveur on reçoit une erreur 404.
+\item \emph{Server internal error} si le serveur rencontre une erreur (à la décompression par exemple).
+\end{itemize}
 
-\section{Question 4.4}
+Aucune retransmission n'est effectuée et c'est un problème dans le cas d'une application en production. En production, il faut que le client n'aie pas à gérer les erreurs du serveur. Si une erreur survient la requête devrait être stockée et renvoyée à un moment à un moment plus opportun pour le serveur. \\
 
-\section{Question 4.5}
+Plusieurs solutions à ce problème sont envisageables et pour chacune d'entre-elles cette première étape est nécessaire :
 
-\section{Question 4.6}
+~~~ \textcolor{pred}{Pour chaque requête ayant rencontré une erreur, stockage de celle-ci dans une liste}
+
+\begin{enumerate}
+\item Essayer de renvoyer les requêtes après un certain temps fixe.
+\item Si une requête passe sans erreur, en profiter pour envoyer toutes celles stockées dans la liste.
+\item Dans le cas où le serveur nous enverrai des informations de temps en temps, attendre que celui-ci nous contacte pour tenter de vider la liste.
+\item Si c'est un problème d'accès au réseau, il est possible de détecter quand le téléphone se connecte au réseau pour réessayer.
+\end{enumerate}
+
+~~~ \textcolor{pgreen}{Une fois les requêtes transmises les étapes suivantes sont nécessaires :} 
+
+\begin{itemize}[resume]
+\item Sortir de la liste les requêtes qui ont pu être envoyées
+\item Notifier l'utilisateur, par exemple à l'aide des notifications Android
+\end{itemize}
+
+Voici un exemple de code de ce qui pourrait être fait. Nous avons choisi de montrer la deuxième solution et de ne pas implémenter dans le code directement dans notre application car cela rajoute quand même une certaine complexité.
+
+La nouvelle classe \emph{RequestUtils} ressemblerai à ça (tous le code n'est pas recopier, les changements et ajouts sont en orange): \\
+
+\begin{lstlisting}[style=java]
+public class RequestUtils {
+
+	<@\textcolor{porange}{private static String[][] pendingRequests = new String[][3]; // Array containing pending requests}@>
+	private static counter = 0;
+	
+	public static String sendRequest(String request, String url, String contentType) {
+
+		(...)      
+            
+		// Response code recuperation
+		int responseCode = connection.getResponseCode();
+
+		// If everything went well
+		if (responseCode == HttpURLConnection.HTTP_OK) {		
+			// Reading response
+			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			String line;
+
+			while ((line = in.readLine()) != null) {
+				response += line;
+			}
+			in.close();
+                
+			// On retente le lancement des differentes requetes
+			sendPendingRequests();
+		} 
+		else {
+			// We add the request in the pending array
+			<@\textcolor{porange}{pendingRequests[counter][0] = request;}@>
+			<@\textcolor{porange}{pendingRequests[counter][1] = url;}@>
+			<@\textcolor{porange}{pendingRequests[counter][2] = contentType;}@>
+			<@\textcolor{porange}{counter ++;}@>
+		}
+
+		(...)
+	}
+	
+	<@\textcolor{porange}{// New function used to send the pending requests}@>
+	private void sendPendingRequests() {
+		for(int i = 0; i < counter; i++) {
+			// Same manipulation as belove to send the request
+			(...) 
+			// Response code recuperation
+			int responseCode = connection.getResponseCode();
+			// If everything went well
+			if (responseCode == HttpURLConnection.HTTP\_OK) {
+				pendingRequests.remove[counter];
+				counter --;
+				// Notify the user with android notification
+			}
+		}
+	}
+}
+
+\end{lstlisting}
+
+\section*{Question 4.2}
+
+\section*{Question 4.3}
+
+\section*{Question 4.4}
+
+\section*{Question 4.5}
+
+\section*{Question 4.6}
 
 \end{document}
