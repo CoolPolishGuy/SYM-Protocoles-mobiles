@@ -174,6 +174,10 @@
 \thispagestyle{empty}
 \clearpage
 
+Tout le code source de l'application est joint à ce rapport. Celui-ci est également disponible sur GitHub via le lien suivant : 
+
+\url{https://github.com/CoolPolishGuy/SYM-Protocoles-mobiles}
+
 \section*{Question 4.1}
 
 Actuellement notre application ne fait rien si le serveur est injoignable ou s'il retourne une erreur quelconque. Seul un message d'erreur est affiché à l'utilisateur, par exemple : 
@@ -200,12 +204,13 @@ Plusieurs solutions à ce problème sont envisageables et pour chacune d'entre-e
 
 \begin{itemize}[resume]
 \item Sortir de la liste les requêtes qui ont pu être envoyées
-\item Notifier l'utilisateur, par exemple à l'aide des notifications Android
+\item Notifier l'utilisateur, par exemple à l'aide des notifications Android \\
 \end{itemize}
 
-Voici un exemple de code de ce qui pourrait être fait. Nous avons choisi de montrer la deuxième solution et de ne pas implémenter ce code directement dans notre application car cela rajoute quand même une certaine complexité.
+Un exemple de code de ce qui pourrait être fait se trouve sur la page suivante. Nous avons choisi de montrer la deuxième solution et de ne pas implémenter ce code directement dans notre application car cela rajoute quand même une certaine complexité.
 
-La nouvelle classe \emph{RequestUtils} ressemblerais à ça (tous le code n'est pas recopier, les changements et ajouts sont en orange): \\
+\clearpage
+La nouvelle classe \emph{RequestUtils} ressemblerait à ça (tout le code n'est pas fourni, les changements et ajouts sont en orange): \\
 
 \begin{lstlisting}[style=java]
 public class RequestUtils {
@@ -250,8 +255,10 @@ public class RequestUtils {
 		for(int i = 0; i < counter; i++) {
 			// Same manipulation as belove to send the request
 			(...) 
+			
 			// Response code recuperation
 			int responseCode = connection.getResponseCode();
+			
 			// If everything went well
 			if (responseCode == HttpURLConnection.HTTP\_OK) {
 				pendingRequests.remove[counter];
@@ -345,8 +352,8 @@ Dans le 2ème cas, on passait de 1391 bytes à 818 et pour le 3ème, on passait 
 La logique de la compression démontre une plus grande efficacité sur des textes plus grands. Les rapports constatés sont de 1.66 / 1.70 / 1.98 donc on peut effectivement constater que dans le 3 ème cas la
 compression est la plus efficace. Ces compressions ont été effectuées avec une compression de niveau 7 (selon la librairie).
 
-Pour ce qui est de la partie théorique, il existe un procédé de plusieurs niveaux qui permet de calculer la compression.
-\newline
+Pour ce qui est de la partie théorique, il existe un procédé de plusieurs niveaux qui permet de calculer la compression. La documentation est accessible  ici : 
+
 \url{https://www.snellman.net/blog/archive/2015-06-05-updated-zlib-benchmarks/}
 
 On peut constater plusieurs choses. Tout d'abord, l'efficacité de compression va dépendre du type de fichier que l'on compresse. 

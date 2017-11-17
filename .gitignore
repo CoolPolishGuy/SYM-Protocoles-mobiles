@@ -2,7 +2,6 @@
 *.toc
 *.log
 *.out
-rapport.pdf
 *.synctex.gz
 build
 .idea
