@@ -277,7 +277,7 @@ Pour une transmission différée les mêmes critères s'appliquent.
 
 
 \section*{Question 4.3}
-On peut d'abord avoir une mauvaise synchronisation des threads entre eux. Surtout s'ils partagent des données mutuelles. Pour des raisons de programmation concurrente l'interraction des deux threads peut crééer des problèmes de famines ou interblocages par exemple.
+On peut d'abord avoir une mauvaise synchronisation des threads entre eux. Surtout s'ils partagent des données mutuelles. Pour des raisons de programmation concurrente l'interaction des deux threads peut créer des problèmes de famines ou interblocages par exemple.
 En théorie, il est important d'avoir un thread par tâche, afin de bien diviser l'exécution des tâches qui se suivent.
 
 \section*{Question 4.4}
@@ -332,15 +332,15 @@ Néanmoins voici une petite liste des avantages / inconvénients par rapport à 
 
 \section*{Question 4.6}
 Pour cette question , nous avons choisi de prendre le format (plain text) de différentes longueurs.
-Pour effectuer les calculs nous avons utilisé des tableaux de bytes dans lequeles nous avons calculé les longueur en byte de chaque string.
+Pour effectuer les calculs nous avons utilisé des tableaux de bytes dans lesquels nous avons calculé les longueurs en byte de chaque string.
 Le 1er cas fut un texte de longueur de 703 bytes normal devenait 423 après compression.
 Dans le 2ème cas on passait de 1391 bytes à 818 et pour le 3ème cas on passait de 4614 bytes à 2330 bytes.
 
 Donc avec la logique du fait que la compression est plus efficace avec un texte plus grand,
 les rapports constatés sont de 1,66 / 1.700 / 1.980 donc on peut effectivement constater que dans le 3 ème cas la
-compression est la plus efficace. Ces compressions ont été effectué ave un niveau de compression.
+compression est la plus efficace. Ces compressions ont été effectué avec un niveau de compression de niveau 7 (selon la librairie).
 
-Pour ce qui est de la partie théorique il existe un procédé de plusieurs niveau qui permet de cacluler la compression théorique.
+Pour ce qui est de la partie théorique, il existe un procédé de plusieurs niveau qui permet de calculer la compression théorique.
 \newline
 \url{https://www.snellman.net/blog/archive/2015-06-05-updated-zlib-benchmarks/}
 
