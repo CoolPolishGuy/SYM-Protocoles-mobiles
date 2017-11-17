@@ -266,13 +266,31 @@ public class RequestUtils {
 
 \section*{Question 4.2}
 
+Il est possible d'utiliser un protocole asynchrone pour l'authentification d'un utilisateur.
+Toutefois, imaginons que nous utilisons une authentification à deux facteurs et que la réponse du serveur tarde trop à être reçue, il est possible que le 2ème facteur d'authentification échoue à cause de ce délai.
+
+Il faut également que les transmissions se fasse dans le bon ordre. Les tâches asynchrones ne s'exécute pas forcement dans l'ordre que l'on imagine. Il faut dans ce cas s'assurer du bon déroulement de l'authentification.
+
+Il faudrait aussi s'assurer que les crédentials restent les mêmes tout au long de l'authentification.
+
+Pour une transmission différée les mêmes critères s'appliquent.
+
+
 \section*{Question 4.3}
 On peut d'abord avoir une mauvaise synchronisation des threads entre eux. Surtout s'ils partagent des données mutuelles. Pour des raisons de programmation concurrentes l'interraction de 2 threads peut crééer des problems de famines ou interblocages par exemple.
 En théorie il est important d'avoir un thread pour une tache différente afin de bien diviser l'execution des tâches qui se suivent.
 
 \section*{Question 4.4}
 
+La solution multiplexée est beaucoup plus efficace. En effet, si on utilise une connexion pour chaque transmission nous aurons à chaque connexion, l'ouverture de celle-ci, l'envoie des données et puis la fermeture de la connexion. 
+
+En utilisant la solution multiplexée, nous allons ouvrir et fermer une seule connexion.
+L'inconvénient est que le serveur qui reçoit les données doit pouvoir gérer la réception de plusieurs données différentes.
+
+Pour traiter la réponse du serveur nous pouvons imaginer d'avoir un id par "données" distinctes. De cette façon, le serveur peut utiliser l'id pour associer une réponse à un élément précis.
+
 \section*{Question 4.5}
+
 
 \section*{Question 4.6}
 Pour cette question , nous avons choisi des prendre le format (plain text) de différentes longueur.
@@ -283,7 +301,6 @@ Dans le 2ème cas on passait de 1391 byte à 818 et pour le 3ème cas on passait
 Donc avec la logique du fait que la compression est plus efficace avec un texte plus grand,
 les rapports sont 1,66 / 1.700 / 1.980 donc on peut effectivement constater que dans le 3 eme cas la
 compression est la plus efficace.
-
 
 Pour ce qui est de la partie théorique il existe un procédé 
 \end{document}
