@@ -272,6 +272,45 @@ public class RequestUtils {
 
 \section*{Question 4.5}
 
+\begin{enumerate}[leftmargin=*, label=\alph*)]
+\item Le JSON ne permet (pas encore) la validations de données. Par rapport au SOAP/XML cela a les impacts suivants : \\
+
+\textcolor{pred}{Inconvénients}
+
+\begin{itemize}
+\item La validation des données permet d'ajouter un couche de sécurité pour les données. Imaginons des données qui seraient saisies directement par un utilisateur (par exemple, le nom dans notre application), en JSON il serait facile de "injecter" des champs inattendus dans la sérialisation. En XML, avec une bonne DTD, un utilisateur malicieux ne pourrait pas ajouter des champs fictif.
+
+\item Dans le cas où le but du développement est de fournir un service web pour des utilisateurs, le JSON devra forcément être accompagné d'une documentation précise afin d'éviter des problèmes, malheureusement souvent cela ne suffit pas et de nombreuses erreurs subsistent malgré la doc. Par contre avec XML, c'est tout à fait possible de donner directement du WSDL pour générer automatiquement les données pour l'utilisateur et limiter donc les parties d'improvisation. \\
+\end{itemize}
+
+\textcolor{pgreen}{Avantages}
+
+\begin{itemize}
+\item JSON est \textbf{beaucoup} plus léger et moins verbeux que le XML.
+\item Le JSON est très facile à utiliser et donc dans le cas d'une petite application où l'on contrôle les deux cotés de la communication le JSON sera certainement plus aisé à mettre en place.
+\item JSON étant un sous-ensemble du Javascript, son utilisation avec le Javascript est facile et naturelle. \\
+\end{itemize}
+
+\item Oui, des protocoles tels que \emph{Protocol Buffers} sont tout à fait utilisables en HTTP. Mais, l'utilisation d'un tel protocole dépendra des contraintes métiers. C'est comme avec le XML ou le JSON, ça dépend de ce qu'on a envie de réaliser à un assez haut niveau.
+
+Néanmoins voici une petite liste des avantages / inconvénients par rapport à des protocoles de type JSON ou XML : 
+
+\begin{itemize}
+\item Plus simple, plus léger que le XML malgré la possibilité d'une vérification aussi assez poussée.
+\medskip
+\item Sérialisation simple dans les langages supportés par rapport au XML.
+\medskip
+\item Quand même un peu plus verbeux que le JSON.
+\medskip
+\item N'est pas encore supporté avec tous les langages.
+\medskip
+\item \emph{Protocol Buffer} ne dispose pas encore d'une intégration optimale avec les navigateurs (contrairement à JSON).
+\medskip
+\item "Grammaire" plus concise que le XML mais du coup, elle est aussi souvent plus compliqué à comprendre et à clarifier.
+\end{itemize}
+
+\end{enumerate}
+
 \section*{Question 4.6}
 Pour cette question , nous avons choisi des prendre le format (plain text) de différentes longueur.
 Pour effectuer les calculs nous avons utiliser des tableaux de byte dans lequelles nous avons calculé le nombre la
