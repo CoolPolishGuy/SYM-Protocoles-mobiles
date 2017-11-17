@@ -179,11 +179,11 @@
 Actuellement notre application ne fait rien si le serveur est injoignable ou s'il retourne une erreur quelconque. Seul un message d'erreur est affiché à l'utilisateur, par exemple : 
 
 \begin{itemize}
-\item \emph{Not found} si le serveur on reçoit une erreur 404.
+\item \emph{Not found} si le serveur renvoie une erreur 404.
 \item \emph{Server internal error} si le serveur rencontre une erreur (à la décompression par exemple).
 \end{itemize}
 
-Aucune retransmission n'est effectuée et c'est un problème dans le cas d'une application en production. En production, il faut que le client n'aie pas à gérer les erreurs du serveur. Si une erreur survient la requête devrait être stockée et renvoyée à un moment à un moment plus opportun pour le serveur. \\
+Aucune retransmission n'est effectuée et c'est un problème dans le cas d'une application en production. Dans ce cas, il faut que le client n'aie pas à gérer les erreurs du serveur. Si une erreur survient la requête devrait être stockée et renvoyée à un moment plus opportun pour le serveur. \\
 
 Plusieurs solutions à ce problème sont envisageables et pour chacune d'entre-elles cette première étape est nécessaire :
 
@@ -203,9 +203,9 @@ Plusieurs solutions à ce problème sont envisageables et pour chacune d'entre-e
 \item Notifier l'utilisateur, par exemple à l'aide des notifications Android
 \end{itemize}
 
-Voici un exemple de code de ce qui pourrait être fait. Nous avons choisi de montrer la deuxième solution et de ne pas implémenter dans le code directement dans notre application car cela rajoute quand même une certaine complexité.
+Voici un exemple de code de ce qui pourrait être fait. Nous avons choisi de montrer la deuxième solution et de ne pas implémenter ce code directement dans notre application car cela rajoute quand même une certaine complexité.
 
-La nouvelle classe \emph{RequestUtils} ressemblerai à ça (tous le code n'est pas recopier, les changements et ajouts sont en orange): \\
+La nouvelle classe \emph{RequestUtils} ressemblerais à ça (tous le code n'est pas recopier, les changements et ajouts sont en orange): \\
 
 \begin{lstlisting}[style=java]
 public class RequestUtils {
@@ -269,15 +269,15 @@ public class RequestUtils {
 Il est possible d'utiliser un protocole asynchrone pour l'authentification d'un utilisateur.
 Toutefois, imaginons que nous utilisons une authentification à deux facteurs et que la réponse du serveur tarde trop à être reçue, il est possible que le 2ème facteur d'authentification échoue à cause de ce délai.
 
-Il faut également que les transmissions se fasse dans le bon ordre. Les tâches asynchrones ne s'exécute pas forcement dans l'ordre que l'on imagine. Il faut dans ce cas s'assurer du bon déroulement de l'authentification.
+Il faut également que les transmissions se fasse dans le bon ordre. Les tâches asynchrones ne s'exécutent pas forcment dans l'ordre que l'on imagine. Il faut dans ce cas s'assurer du bon déroulement de l'authentification.
 
-Il faudrait aussi s'assurer que les crédentials restent les mêmes tout au long de l'authentification.
+Il faudrait aussi s'assurer que les \emph{credentials} restent les mêmes tout au long de l'authentification.
 
 Pour une transmission différée les mêmes critères s'appliquent.
 
 
 \section*{Question 4.3}
-On peut d'abord avoir une mauvaise synchronisation des threads entre eux. Surtout s'ils partagent des données mutuelles. Pour des raisons de programmation concurrente l'interaction des deux threads peut créer des problèmes de famines ou interblocages par exemple.
+On peut d'abord avoir une mauvaise synchronisation des threads entre eux. Surtout s'ils partagent des données mutuelles. Pour des raisons de programmation concurrente l'interaction des deux threads peut créer des problèmes de famine ou interblocage par exemple.
 En théorie, il est important d'avoir un thread par tâche, afin de bien diviser l'exécution des tâches qui se suivent.
 
 \section*{Question 4.4}
@@ -297,56 +297,60 @@ Pour traiter la réponse du serveur nous pouvons imaginer d'avoir un id par "don
 \textcolor{pred}{Inconvénients}
 
 \begin{itemize}
-\item La validation des données permet d'ajouter un couche de sécurité pour les données. Imaginons des données qui seraient saisies directement par un utilisateur (par exemple, le nom dans notre application), en JSON il serait facile de "injecter" des champs inattendus dans la sérialisation. En XML, avec une bonne DTD, un utilisateur malicieux ne pourrait pas ajouter des champs fictif.
+\item La validation des données permet d'ajouter un couche de sécurité pour les données. Imaginons des données qui seraient saisies directement par un utilisateur (par exemple, le nom dans notre application), en JSON il serait facile de "injecter" des champs inattendus dans la sérialisation. En XML, avec une bonne DTD, un utilisateur malicieux ne pourrait pas ajouter des champs fictifs.
 
-\item Dans le cas où le but du développement est de fournir un service web pour des utilisateurs, le JSON devra forcément être accompagné d'une documentation précise afin d'éviter des problèmes, malheureusement souvent cela ne suffit pas et de nombreuses erreurs subsistent malgré la doc. Par contre avec XML, c'est tout à fait possible de donner directement du WSDL pour générer automatiquement les données pour l'utilisateur et limiter donc les parties d'improvisation. \\
+\item Dans le cas où le but du développement est de fournir un service web pour des utilisateurs, le JSON devra forcément être accompagné d'une documentation précise afin d'éviter des problèmes. Malheureusement, souvent cela ne suffit pas et de nombreuses erreurs subsistent malgré cette documentation. Par contre avec XML, il est tout à fait possible de donner directement du WSDL pour générer automatiquement les données pour l'utilisateur et limiter donc les parties d'improvisation. \\
 \end{itemize}
 
 \textcolor{pgreen}{Avantages}
 
 \begin{itemize}
 \item JSON est \textbf{beaucoup} plus léger et moins verbeux que le XML.
-\item Le JSON est très facile à utiliser et donc dans le cas d'une petite application où l'on contrôle les deux cotés de la communication le JSON sera certainement plus aisé à mettre en place.
+\item Le JSON est très facile à utiliser et dans le cas d'une petite application où l'on contrôle les deux cotés de la communication, le JSON sera certainement plus aisé à mettre en place.
 \item JSON étant un sous-ensemble du Javascript, son utilisation avec le Javascript est facile et naturelle. \\
 \end{itemize}
 
-\item Oui, des protocoles tels que \emph{Protocol Buffers} sont tout à fait utilisables en HTTP. Mais, l'utilisation d'un tel protocole dépendra des contraintes métiers. C'est comme avec le XML ou le JSON, ça dépend de ce qu'on a envie de réaliser à un assez haut niveau.
+\item Oui, des protocoles tels que \emph{Protocol Buffers} sont tout à fait utilisables en HTTP. Mais, l'utilisation d'un tel protocole dépendra des contraintes métiers. C'est comme avec le XML ou le JSON, cela dépend de ce qu'on a envie de réaliser à un assez haut niveau.
 
 Néanmoins voici une petite liste des avantages / inconvénients par rapport à des protocoles de type JSON ou XML : 
 
-\begin{itemize}
-\item Plus simple, plus léger que le XML malgré la possibilité d'une vérification aussi assez poussée.
+\newif\ifgooditem
+\gooditemtrue
+\newcommand\gooditem{\gooditemtrue\item}
+\newcommand\baditem{\gooditemfalse\item}
+
+\begin{itemize}[label={\ifgooditem\color{pgreen}\else\color{pred}\fi\textbullet}]
+\gooditem Plus simple, plus léger que le XML malgré la possibilité d'une vérification presque aussi poussée.
 \medskip
-\item Sérialisation simple dans les langages supportés par rapport au XML.
+\gooditem Sérialisation simple dans les langages supportés par rapport au XML.
 \medskip
-\item Quand même un peu plus verbeux que le JSON.
+\baditem Quand même un peu plus verbeux que le JSON.
 \medskip
-\item N'est pas encore supporté avec tous les langages.
+\baditem N'est pas encore supporté avec tous les langages.
 \medskip
-\item \emph{Protocol Buffer} ne dispose pas encore d'une intégration optimale avec les navigateurs (contrairement à JSON).
+\baditem \emph{Protocol Buffer} ne dispose pas encore d'une intégration optimale avec les navigateurs (contrairement à JSON).
 \medskip
-\item "Grammaire" plus concise que le XML mais du coup, elle est aussi souvent plus compliqué à comprendre et à clarifier.
+\baditem "Grammaire" plus concise que le XML mais du coup, elle est aussi souvent plus compliquée à comprendre et à clarifier.
 \end{itemize}
 
 \end{enumerate}
 
 \section*{Question 4.6}
 Pour cette question , nous avons choisi de prendre le format (plain text) de différentes longueurs.
-Pour effectuer les calculs nous avons utilisé des tableaux de bytes dans lesquels nous avons calculé les longueurs en byte de chaque string.
-Le 1er cas fut un texte de longueur de 703 bytes normal devenait 423 après compression.
-Dans le 2ème cas on passait de 1391 bytes à 818 et pour le 3ème cas on passait de 4614 bytes à 2330 bytes.
+Pour effectuer les calculs nous avons utilisé des tableaux de bytes dans lesquels nous avons calculé les longueurs de chaque string.
+Le 1er cas fut un texte de 703 bytes qui en mesurait 423 après la compression.
+Dans le 2ème cas, on passait de 1391 bytes à 818 et pour le 3ème, on passait de 4614 bytes à 2330.
 
-Donc avec la logique du fait que la compression est plus efficace avec un texte plus grand,
-les rapports constatés sont de 1,66 / 1.700 / 1.980 donc on peut effectivement constater que dans le 3 ème cas la
-compression est la plus efficace. Ces compressions ont été effectué avec un niveau de compression de niveau 7 (selon la librairie).
+%Donc avec la logique du fait que la compression est plus efficace avec un texte plus grand,
+La logique de la compression démontre une plus grande efficacité sur des textes plus grands. Les rapports constatés sont de 1.66 / 1.70 / 1.98 donc on peut effectivement constater que dans le 3 ème cas la
+compression est la plus efficace. Ces compressions ont été effectuées avec une compression de niveau 7 (selon la librairie).
 
-Pour ce qui est de la partie théorique, il existe un procédé de plusieurs niveau qui permet de calculer la compression théorique.
+Pour ce qui est de la partie théorique, il existe un procédé de plusieurs niveaux qui permet de calculer la compression.
 \newline
 \url{https://www.snellman.net/blog/archive/2015-06-05-updated-zlib-benchmarks/}
 
-On peut constater plusieurs choses. Tout d'abord l'efficacité de compression va dépendre du type de fichier que l'on compresse. 
+On peut constater plusieurs choses. Tout d'abord, l'efficacité de compression va dépendre du type de fichier que l'on compresse. 
 \newline
-En moyenne la compression permet d'obtenir des tailles deux fois plus compacte et donc rend la compression un outil indispensable pour une communication simple et efficace.
-
+En moyenne, la compression permet d'obtenir des tailles deux fois plus compactes et donc fait de la compression un outil indispensable pour une communication simple et efficace.
 
 \end{document}
