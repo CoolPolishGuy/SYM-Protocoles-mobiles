@@ -267,6 +267,8 @@ public class RequestUtils {
 \section*{Question 4.2}
 
 \section*{Question 4.3}
+On peut d'abord avoir une mauvaise synchronisation des threads entre eux. Surtout s'ils partagent des données mutuelles. Pour des raisons de programmation concurrentes l'interraction de 2 threads peut crééer des problems de famines ou interblocages par exemple.
+En théorie il est important d'avoir un thread pour une tache différente afin de bien diviser l'execution des tâches qui se suivent.
 
 \section*{Question 4.4}
 
@@ -274,11 +276,9 @@ public class RequestUtils {
 
 \section*{Question 4.6}
 Pour cette question , nous avons choisi des prendre le format (plain text) de différentes longueur.
-Pour effectuer les calculs nous avons utiliser des tableaux de byte dans lequelles nous avons calculé le nombre la
-longueur en byte de chaque string.
-Le 1er cas fut un texte de longeur de 703 byte normal devenait 423 apres compression.
-Dans le 2 eme cas on passait de 1391 byte à 818 et pour le 3ème cas on passait de 4614 byte
-à 2330 byte.
+Pour effectuer les calculs nous avons utiliser des tableaux de byte dans lequelles nous avons calculé  la longueur en byte de chaque string.
+Le 1er cas fut un texte de longueur de 703 byte normal devenait 423 après compression.
+Dans le 2ème cas on passait de 1391 byte à 818 et pour le 3ème cas on passait de 4614 byte à 2330 byte.
 
 Donc avec la logique du fait que la compression est plus efficace avec un texte plus grand,
 les rapports sont 1,66 / 1.700 / 1.980 donc on peut effectivement constater que dans le 3 eme cas la
